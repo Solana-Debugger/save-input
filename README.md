@@ -34,6 +34,7 @@ pub async fn process_transaction(
         .await
         .unwrap();
 
+    // Add this line
     save_input::save_input(&self.context.banks_client, &transaction, &all_signers).await.unwrap();
 
     transaction.sign(&all_signers, recent_blockhash);
@@ -76,5 +77,5 @@ solana-sdk = "=2.1.9"
 
 These are Solana programs where `save_input.rs` is already included. Running their integration tests will create the debugger inputs.
 
-* [[solana-debugger-governance-program-example]]
-* [[solana-debugger-delta-counter-program-example]]
+* [Governance program](https://github.com/Solana-Debugger/governance-program-example)
+* [Delta counter program](https://github.com/Solana-Debugger/delta-counter-example)
