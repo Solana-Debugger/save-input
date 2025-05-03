@@ -34,7 +34,7 @@ pub async fn process_transaction(
         .await
         .unwrap();
 
-    // Add this line
+    // This is the only line we need to add
     save_input::save_input(&self.context.banks_client, &transaction, &all_signers).await.unwrap();
 
     transaction.sign(&all_signers, recent_blockhash);
@@ -55,6 +55,8 @@ cd governance/program
 
 cargo-test-sbf test_create_realm --test process_create_realm -- --exact --nocapture
 ```
+
+The output will be in `governance/program/debug_input`, with one folder per saved transaction
 
 ## Required dependencies
 
