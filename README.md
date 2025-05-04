@@ -1,8 +1,15 @@
 # Solana Debugger: Save Input
 
-To debug a Solana program, you need to specify its input. In this case the input is quite complex and it can be quite tedious to create it manually.
+To debug a Solana program, you need to specify its input. Unlike regular problems, the complete input to a Solana program is quite complex (e.g. you need to specify the full ledger state). Especially for more complex programs, it can be quite tedious to create it manually.
 
-This repo contains a Rust module to make this easier: you include it into your project, run its main function inside a test and it will create the necessary files for you
+This repo tries to make it easier by allowing you to create the input data directly from your integration tests.
+
+This is how it works:
+1. You declare the `save_input.rs` module in your test framework
+2. At the point in your test framework where you send the transaction to Banks, you add a call to `save_input` (see the example below)
+3. Run the integration test that contains the tx you want to debug
+4. For each tx that is processed, this will generate a `debug_input/program_input_N` folder
+5. To debug a tx, pass the respective folder to `solana-debugger init`
 
 ## Example: How to include `save_input.rs`
 
@@ -56,7 +63,7 @@ cd governance/program
 cargo-test-sbf test_create_realm --test process_create_realm -- --exact --nocapture
 ```
 
-The output will be in `governance/program/debug_input`, with one folder per saved transaction
+The output will be in `governance/program/debug_input`, with one folder per transaction
 
 ## Required dependencies
 
