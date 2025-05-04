@@ -1,11 +1,12 @@
 # Solana Debugger: Save Input
 
-To debug a Solana program, you need to specify its input. Unlike regular problems, the complete input to a Solana program is quite complex (e.g. you need to specify the full ledger state). Especially for more complex programs, it can be quite tedious to create it manually.
+To debug a Solana program, you need to specify its input. Unlike regular programs, the complete input to a Solana program is quite complex (transaction, signers, ledger state). Especially for more complex programs, this can be quite tedious to create.
 
-This repo tries to make it easier by allowing you to create the input data directly from your integration tests.
+This repo tries to make this easier by allowing you to create the input data directly from your integration tests.
 
-This is how it works:
-1. You declare the `save_input.rs` module in your test framework
+## How it works
+
+1. You add the [`save_input.rs`](https://github.com/Solana-Debugger/save-input) module to your test framework
 2. At the point in your test framework where you send the transaction to Banks, you add a call to `save_input` (see the example below)
 3. Run the integration test that contains the tx you want to debug
 4. For each tx that is processed, this will generate a `debug_input/program_input_N` folder
@@ -13,10 +14,11 @@ This is how it works:
 
 ## Example: How to include `save_input.rs`
 
-The SPL governance program uses its own test SDK with a function that processes all transactions. We can use this as a hook to call `save_input`.
+The SPL governance program uses its own test SDK. It has a function that processes all transactions. We can use it as a hook to call `save_input`.
 
 To do this, make these changes to `governance/test-sdk/src/lib.rs`:
 ```
+// Declare it
 mod save_input;
 
 [...]
@@ -41,6 +43,7 @@ pub async fn process_transaction(
         .await
         .unwrap();
 
+    // Call save_input
     // This is the only line we need to add
     save_input::save_input(&self.context.banks_client, &transaction, &all_signers).await.unwrap();
 
@@ -63,7 +66,7 @@ cd governance/program
 cargo-test-sbf test_create_realm --test process_create_realm -- --exact --nocapture
 ```
 
-The output will be in `governance/program/debug_input`, with one folder per transaction
+The output will be stored in `governance/program/debug_input`, containing one subfolder per transaction.
 
 ## Required dependencies
 
@@ -84,7 +87,7 @@ solana-sdk = "=2.1.9"
 
 ## Examples
 
-These are Solana programs where `save_input.rs` is already included. Running their integration tests will create the debugger inputs.
+These are Solana programs where `save_input.rs` was already integrated. Running their integration tests will create inputs for the debugger.
 
 * [Governance program](https://github.com/Solana-Debugger/governance-program-example)
-* [Delta counter program](https://github.com/Solana-Debugger/delta-counter-example)
+* [Delta counter program](https://github.com/Solana-Debugger/delta-counter-program-example)
