@@ -1,4 +1,4 @@
-# Solana Debugger: Save Input
+# Solana Debugger: Save input
 
 To debug a Solana program, you need to specify its input. Unlike regular programs, the complete input to a Solana program is quite complex (transaction, signers, ledger state). Especially for more complex programs, this can be quite tedious to create.
 
@@ -60,12 +60,14 @@ pub async fn process_transaction(
 
 Now, you can run a test to generate the debug input:
 ```
-cd governance/program
+cd solana-program-library/governance/program
 
 cargo-test-sbf test_create_realm --test process_create_realm -- --exact --nocapture
+
+# cargo-test-sbf test_refund_proposal_deposit --test process_refund_proposal_deposit -- --exact --nocapture
 ```
 
-The output will be stored in `governance/program/debug_input`, containing one subfolder per transaction.
+The output will be stored in `solana-program-library/governance/program/debug_input`, containing one subfolder per transaction.
 
 ## Required dependencies
 
