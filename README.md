@@ -90,5 +90,5 @@ solana-sdk = "=2.1.9"
 
 These are Solana programs where `save_input.rs` is already included. Running their integration tests will create inputs for the debugger.
 
-* [Governance program](https://github.com/Solana-Debugger/governance-program-example)
 * [Delta counter program](https://github.com/Solana-Debugger/delta-counter-program-example)
+* [Governance program](https://github.com/Solana-Debugger/governance-program-example)
